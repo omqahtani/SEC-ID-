@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEC ID Request</title>
+<title>SEC ID Request Form</title>
 
 <style>
 body{
@@ -19,22 +20,30 @@ margin:auto;
 }
 
 .header{
-background:linear-gradient(135deg,#0f62fe,#3b82f6);
-color:white;
-padding:30px;
+background:white;
+padding:25px;
 border-radius:14px;
-box-shadow:0 12px 30px rgba(0,0,0,0.1);
+box-shadow:0 12px 30px rgba(0,0,0,0.08);
 margin-bottom:20px;
+display:flex;
+align-items:center;
+gap:20px;
 }
 
-.header h1{
+.logo{
+height:60px;
+}
+
+.header-title h1{
 margin:0;
-font-size:28px;
+font-size:26px;
+color:#0f62fe;
 }
 
-.header p{
-margin-top:8px;
-opacity:0.9;
+.header-title p{
+margin-top:6px;
+color:#555;
+font-size:14px;
 }
 
 .card{
@@ -61,16 +70,12 @@ margin-bottom:6px;
 display:block;
 }
 
-input,select,textarea{
+input,select{
 width:100%;
 padding:10px;
 border-radius:8px;
 border:1px solid #d1d5db;
 font-size:14px;
-}
-
-textarea{
-height:100px;
 }
 
 button{
@@ -99,8 +104,11 @@ margin-bottom:20px;
 <div class="container">
 
 <div class="header">
+<img src="logo.png" class="logo">
+<div class="header-title">
 <h1>SEC ID Request Form</h1>
-<p>Fill the form and submit. An email will open with your request ready to send.</p>
+<p>Fill the form then press submit. Email will open ready to send.</p>
+</div>
 </div>
 
 <div class="card">
@@ -216,11 +224,6 @@ margin-bottom:20px;
 </div>
 
 <div class="full">
-<label>Notes</label>
-<textarea id="notes"></textarea>
-</div>
-
-<div class="full">
 <button type="button" onclick="sendEmail()">Submit Request</button>
 </div>
 
@@ -239,27 +242,38 @@ document.getElementById("contract").value=contract||"";
 
 function sendEmail(){
 
+const fullName = document.getElementById("name").value;
+const idIqama = document.getElementById("id").value;
+const dob = document.getElementById("dob").value;
+const mobile = document.getElementById("mobile").value;
+const employeeEmail = document.getElementById("email").value;
+const managerEmail = document.getElementById("manager").value;
+const approval = document.getElementById("approval").value;
+const blood = document.getElementById("blood").value;
+const edu = document.getElementById("edu").value;
+const project = document.getElementById("project").value;
+const contract = document.getElementById("contract").value;
+const region = document.getElementById("region").value;
+const type = document.getElementById("type").value;
+
 let body=`SEC ID Request
 
-Full Name: ${name.value}
-ID / Iqama Number: ${id.value}
-Date of Birth: ${dob.value}
-Mobile Number: ${mobile.value}
+Full Name: ${fullName}
+ID / Iqama Number: ${idIqama}
+Date of Birth: ${dob}
+Mobile Number: ${mobile}
 
-Employee Email: ${email.value}
-Direct Manager Email: ${manager.value}
-Approval Authority: ${approval.value}
+Employee Email: ${employeeEmail}
+Direct Manager Email: ${managerEmail}
+Approval Authority: ${approval}
 
-Blood Type: ${blood.value}
-Educational Qualification: ${edu.value}
+Blood Type: ${blood}
+Educational Qualification: ${edu}
 
-Project: ${project.value}
-Contract Number: ${contract.value}
-Region: ${region.value}
-Request Type: ${type.value}
-
-Notes:
-${notes.value}
+Project: ${project}
+Contract Number: ${contract}
+Region: ${region}
+Request Type: ${type}
 
 Required Attachments:
 - ID Copy
@@ -268,9 +282,11 @@ Required Attachments:
 - Ajeer Report (if applicable)
 `;
 
-let mail=`mailto:Omar.alqahtani@elsewedy.com?cc=${manager.value}&subject=SEC ID Request - ${name.value}&body=${encodeURIComponent(body)}`;
+let subject = encodeURIComponent(`SEC ID Request - ${fullName}`);
 
-window.location.href=mail;
+let mail=`mailto:Omar.alqahtani@elsewedy.com?cc=${managerEmail}&subject=${subject}&body=${encodeURIComponent(body)}`;
+
+window.location.href = mail;
 
 }
 
