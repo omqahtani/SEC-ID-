@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEC ID Request</title>
+
+<style>
+body{
+font-family: Arial, Helvetica, sans-serif;
+background: linear-gradient(180deg,#eef3fb,#f9fbff);
+margin:0;
+padding:40px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+.header{
+background:linear-gradient(135deg,#0f62fe,#3b82f6);
+color:white;
+padding:30px;
+border-radius:14px;
+box-shadow:0 12px 30px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+.header h1{
+margin:0;
+font-size:28px;
+}
+
+.header p{
+margin-top:8px;
+opacity:0.9;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:14px;
+box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+.full{
+grid-column:1/-1;
+}
+
+label{
+font-weight:600;
+font-size:14px;
+margin-bottom:6px;
+display:block;
+}
+
+input,select,textarea{
+width:100%;
+padding:10px;
+border-radius:8px;
+border:1px solid #d1d5db;
+font-size:14px;
+}
+
+textarea{
+height:100px;
+}
+
+button{
+background:#0f62fe;
+color:white;
+border:none;
+padding:14px 24px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.docs{
+background:#f8fafc;
+border:1px solid #e5e7eb;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>SEC ID Request Form</h1>
+<p>Fill the form and submit. An email will open with your request ready to send.</p>
+</div>
+
+<div class="card">
+
+<div class="docs">
+<b>Required Attachments (attach them in the email before sending):</b>
+<ul>
+<li>ID Copy</li>
+<li>Personal Photo (White Background)</li>
+<li>Muqeem Report</li>
+<li>Ajeer Report (If Applicable)</li>
+</ul>
+</div>
+
+<form class="grid">
+
+<div class="full">
+<label>Full Name</label>
+<input type="text" id="name">
+</div>
+
+<div>
+<label>ID / Iqama Number</label>
+<input type="text" id="id">
+</div>
+
+<div>
+<label>Date of Birth</label>
+<input type="date" id="dob">
+</div>
+
+<div>
+<label>Mobile Number</label>
+<input type="text" id="mobile">
+</div>
+
+<div>
+<label>Employee Email</label>
+<input type="email" id="email">
+</div>
+
+<div>
+<label>Direct Manager Email</label>
+<input type="email" id="manager">
+</div>
+
+<div class="full">
+<label>Approval Authority / Department</label>
+<input type="text" id="approval">
+</div>
+
+<div>
+<label>Blood Type</label>
+<select id="blood">
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>AB-</option>
+<option>O+</option>
+<option>O-</option>
+</select>
+</div>
+
+<div>
+<label>Educational Qualification</label>
+<select id="edu">
+<option>High School</option>
+<option>Diploma</option>
+<option>Bachelor’s Degree</option>
+<option>Master’s Degree</option>
+<option>PhD</option>
+<option>Other</option>
+</select>
+</div>
+
+<div>
+<label>Project Name</label>
+<select id="project" onchange="setContract()">
+<option value="">Select</option>
+<option data-contract="4400019484">Interconnection of Qanadeel BSP in Makkah</option>
+<option data-contract="4400021671">INSTALLATION OF 110 KV UGC FOR THE NEW R</option>
+<option data-contract="4400022990">CONNECTING THE NEW CULTURE OASIS SUBSTAT</option>
+<option data-contract="4400023177">INSTALL OF 110 KV UGC ALNOOR IN MAKKAH</option>
+<option data-contract="4400023283">Construction interconnection in UMLUJ</option>
+</select>
+</div>
+
+<div>
+<label>Contract Number</label>
+<input type="text" id="contract" readonly>
+</div>
+
+<div>
+<label>Region</label>
+<select id="region">
+<option>Central Region</option>
+<option>Eastern Region</option>
+<option>Western Region</option>
+<option>Northern Region</option>
+<option>Southern Region</option>
+</select>
+</div>
+
+<div>
+<label>Request Type</label>
+<select id="type">
+<option>New</option>
+<option>Replacement (Lost)</option>
+<option>Replacement (Damaged)</option>
+</select>
+</div>
+
+<div class="full">
+<label>Notes</label>
+<textarea id="notes"></textarea>
+</div>
+
+<div class="full">
+<button type="button" onclick="sendEmail()">Submit Request</button>
+</div>
+
+</form>
+
+</div>
+</div>
+
+<script>
+
+function setContract(){
+let p=document.getElementById("project");
+let contract=p.options[p.selectedIndex].getAttribute("data-contract");
+document.getElementById("contract").value=contract||"";
+}
+
+function sendEmail(){
+
+let body=`SEC ID Request
+
+Full Name: ${name.value}
+ID / Iqama Number: ${id.value}
+Date of Birth: ${dob.value}
+Mobile Number: ${mobile.value}
+
+Employee Email: ${email.value}
+Direct Manager Email: ${manager.value}
+Approval Authority: ${approval.value}
+
+Blood Type: ${blood.value}
+Educational Qualification: ${edu.value}
+
+Project: ${project.value}
+Contract Number: ${contract.value}
+Region: ${region.value}
+Request Type: ${type.value}
+
+Notes:
+${notes.value}
+
+Required Attachments:
+- ID Copy
+- Personal Photo
+- Muqeem Report
+- Ajeer Report (if applicable)
+`;
+
+let mail=`mailto:Omar.alqahtani@elsewedy.com?cc=${manager.value}&subject=SEC ID Request - ${name.value}&body=${encodeURIComponent(body)}`;
+
+window.location.href=mail;
+
+}
+
+</script>
+
+</body>
+</html>
